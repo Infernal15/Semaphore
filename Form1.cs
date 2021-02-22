@@ -21,7 +21,6 @@ namespace Semaphore
         public Form1()
         {
             InitializeComponent();
-            listBox1.Items.Add(1);
             Set_max();
             list = new Dictionary<int, int>();
             thd = new List<Thread>();
@@ -29,29 +28,30 @@ namespace Semaphore
 
             Sem = new System.Threading.Semaphore(prev, 10);
             numeric = 0;
-
-            //for (int num = 0; num < 5; num++)
-            //{
-            //    thd.Add(new Thread(Method));
-
-            //    thd[num].Start(num);
-            //}
-
-            Thread.Sleep(500);
         }
 
-        private static void Method(object obj)
+        private void Method(object obj)
         {
+            listBox2.Invoke((Action)delegate() { listBox2.Items.Remove("Поток " + (int)obj + " --> Очікує"); });
+            listBox1.Invoke((Action)delegate () { listBox1.Items.Add("Поток " + (int)obj + " --> 1"); });
             while (true)
             {
                 Sem.WaitOne();
                 if (!list.ContainsKey((int)obj))
                     list[(int)obj] = 1;
                 else
-                    list[(int)obj] = list[(int)obj] + 1;
+                {
+                    try
+                    {
+                        listBox1.Invoke((Action)delegate () { listBox1.Items.Remove("Поток " + (int)obj + $" --> {list[(int)obj]}"); });
+                        list[(int)obj] = list[(int)obj] + 1;
+                        listBox1.Invoke((Action)delegate () { listBox1.Items.Add("Поток " + (int)obj + $" --> {list[(int)obj]}"); });
+                    }
+                    catch
+                    {
 
-                Console.WriteLine((int)obj + "   " + list[(int)obj] + "  " + Sem.Release());
-                Sem.WaitOne();
+                    }
+                }
 
                 Sem.Release();
                 Thread.Sleep(1000);
@@ -103,7 +103,13 @@ namespace Semaphore
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("temp3");
+            if (listBox1.SelectedItem != null)
+            {
+                int temp = Convert.ToInt32(listBox1.SelectedItem.ToString().Split(' ')[1]);
+                listBox1.Items.Remove(listBox1.SelectedItem.ToString());
+                thd[temp - 1].Abort();
+            }
+            Set_max();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -136,6 +142,21 @@ namespace Semaphore
                 listBox3.Items.Remove(listBox3.SelectedItem.ToString());
                 thd[temp - 1].Start(temp);
             }
+            Set_max();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            for (int i = 0; i < thd.Count; i++)
+            {
+                thd[i].Abort();
+            }
+            Sem.Dispose();
+        }
+
+        private void listBox2_DisplayMemberChanged(object sender, EventArgs e)
+        {
+            Set_max();
         }
     }
 }

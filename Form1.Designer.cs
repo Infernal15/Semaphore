@@ -87,6 +87,7 @@ namespace Semaphore
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(119, 95);
             this.listBox2.TabIndex = 4;
+            this.listBox2.DisplayMemberChanged += new System.EventHandler(this.listBox2_DisplayMemberChanged);
             // 
             // listBox3
             // 
@@ -146,6 +147,7 @@ namespace Semaphore
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
