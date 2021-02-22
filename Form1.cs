@@ -120,16 +120,37 @@ namespace Semaphore
                 {
                     Thread term = new Thread(Down);
                     term.Start();
+                    int max = 0;
+                    int j = 0;
+                    while (listBox1.Items.Count > (int)numericUpDown1.Value)
+                    {
+                        for (int i = 0; i < thd.Count; i++)
+                        {
+                            try
+                            {
+                                if (thd[i].IsAlive)
+                                {
+                                    if (max < list[i])
+                                    {
+                                        j = i;
+                                        max = list[i];
+                                    }
+                                }
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        thd[j].Abort();
+                        listBox1.Items.Clear();
+                    }
                 }
                 else if (prev < (int)numericUpDown1.Value)
                 {
                     Sem.Release();
                 }
                 prev = (int)numericUpDown1.Value;
-                foreach (Thread temp in thd)
-                {
-                    Console.WriteLine(temp.ThreadState);
-                }
             }
         }
 
