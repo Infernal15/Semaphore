@@ -13,10 +13,10 @@ namespace Semaphore
 {
     public partial class Form1 : Form
     {
-        private static System.Threading.Semaphore Sem;
         private int num;
         private int prev;
         private static Dictionary<int, int> list;
+        Sema semafor;
         List<Thread> thd;
         public Form1()
         {
@@ -26,36 +26,12 @@ namespace Semaphore
             list = new Dictionary<int, int>();
             thd = new List<Thread>();
             prev = (int)numericUpDown1.Value;
+            semafor = new Sema(prev, list, thd);
 
-            Sem = new System.Threading.Semaphore(prev, 10);
             num = 0;
-
-            for (int num = 0; num < 5; num++)
-            {
-                thd.Add(new Thread(Method));
-
-                thd[num].Start(num);
-            }
-
-            Thread.Sleep(500);
         }
 
-        private static void Method(object obj)
-        {
-            while (true)
-            {
-                Sem.WaitOne();
-                if (!list.ContainsKey((int)obj))
-                    list[(int)obj] = 1;
-                else
-                    list[(int)obj] = list[(int)obj] + 1;
-
-                Console.WriteLine((int)obj + "   " + list[(int)obj]);
-
-                Thread.Sleep(1000);
-                Sem.Release();
-            }
-        }
+        
 
 
         private void Change_position()
@@ -100,18 +76,10 @@ namespace Semaphore
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            if ((int)numericUpDown1.Value <= 100)
-            {
-                Sem.Dispose();
-                Sem = new System.Threading.Semaphore((int)numericUpDown1.Value, 10);
-                Sem.Release((int)numericUpDown1.Value);
-                //Sem.Release();
-                Console.WriteLine(Sem.Release());
-                foreach(Thread temp in thd)
-                {
-                    Console.WriteLine(temp.ThreadState);
-                }
-            }
+            if (prev > (int)numericUpDown1.Value && (int)numericUpDown1.Value >= 1)
+                semafor.Down();
+            else if ((int)numericUpDown1.Value <= 100)
+                semafor.Up();
         }
     }
 }
