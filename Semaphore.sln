@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semaphore", "Semaphore.csproj", "{3AB6425C-9073-44E9-B7E0-3DF3700893C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AB6425C-9073-44E9-B7E0-3DF3700893C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB6425C-9073-44E9-B7E0-3DF3700893C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB6425C-9073-44E9-B7E0-3DF3700893C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB6425C-9073-44E9-B7E0-3DF3700893C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BCDD3E59-9449-4D12-A2A3-874BE0299D67}
+	EndGlobalSection
+EndGlobal
